@@ -404,7 +404,39 @@ $topics->topic('TopicA')
 	       $condition->topic('TopicB')->orTopic('TopicC');
        });
 ```
+## Multiple Senders
 
+If you need to use multiple senders, you can add the fcm.config file to the config folder and add the necessary senders.
+
+```php
+<?php
+
+return [
+    'driver' => env('FCM_PROTOCOL', 'http'),
+    'log_enabled' => false,
+
+    'http' => [
+        'server_key' => env('FCM_SERVER_KEY', 'Your FCM server key'),
+        'sender_id' => env('FCM_SENDER_ID', 'Your sender id'),
+        'server_send_url' => 'https://fcm.googleapis.com/fcm/send',
+        'server_group_url' => 'https://android.googleapis.com/gcm/notification',
+        'timeout' => 30.0, // in second
+    ],
+    
+    'second_sender' => [
+        'server_key' => env('SECOND_FCM_SERVER_KEY', 'Your alternative FCM server key'),
+        'sender_id' => env('SECOND_FCM_SENDER_ID', 'Your alternative sender id'),
+        'server_send_url' => 'https://fcm.googleapis.com/fcm/send',
+        'server_group_url' => 'https://android.googleapis.com/gcm/notification',
+        'timeout' => 30.0, // in second
+    ],
+];
+```
+
+And now you can pass the additional parameter $config_key to make use of different senders when you need it
+```php
+FCM::sendTo($tokens, $option, $notification, $data, 'fcm.second_sender');
+```
 
 ## Testing
 

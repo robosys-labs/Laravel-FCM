@@ -23,10 +23,11 @@ abstract class BaseRequest
 
     /**
      * BaseRequest constructor.
+     * @param string $config_key
      */
-    public function __construct()
+    public function __construct($config_key)
     {
-        $this->config = app('config')->get('fcm.http', []);
+        $this->config = app('config')->get($config_key, []);
     }
 
     /**

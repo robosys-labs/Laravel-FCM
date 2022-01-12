@@ -55,10 +55,11 @@ class Request extends BaseRequest
      * @param PayloadNotification $notification
      * @param PayloadData         $data
      * @param Topics|null         $topic
+     * @param string              $config_key
      */
-    public function __construct($to, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, Topics $topic = null)
+    public function __construct($to, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, Topics $topic = null, $config_key = 'fcm.http')
     {
-        parent::__construct();
+        parent::__construct($config_key);
 
         $this->to = $to;
         $this->options = $options;
