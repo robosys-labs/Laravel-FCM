@@ -42,10 +42,11 @@ class GroupRequest extends BaseRequest
      * @param $notificationKeyName
      * @param $notificationKey
      * @param $registrationIds
+     * @param string $config_key
      */
-    public function __construct($operation, $notificationKeyName, $notificationKey, $registrationIds)
+    public function __construct($operation, $notificationKeyName, $notificationKey, $registrationIds, $config_key = 'fcm.http')
     {
-        parent::__construct();
+        parent::__construct($config_key);
 
         $this->operation = $operation;
         $this->notificationKeyName = $notificationKeyName;

@@ -29,17 +29,18 @@ class FCMSender extends HTTPSender
      * @param Options|null             $options
      * @param PayloadNotification|null $notification
      * @param PayloadData|null         $data
+     * @param string                   $config_key
      *
      * @return DownstreamResponse|null
      */
-    public function sendTo($to, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null)
+    public function sendTo($to, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, $config_key = 'fcm.http')
     {
         $response = null;
 
         if (is_array($to) && !empty($to)) {
             $partialTokens = array_chunk($to, self::MAX_TOKEN_PER_REQUEST, false);
             foreach ($partialTokens as $tokens) {
-                $request = new Request($tokens, $options, $notification, $data);
+                $request = new Request($tokens, $options, $notification, $data, null, $config_key);
 
                 $responseGuzzle = $this->post($request);
 
@@ -51,7 +52,7 @@ class FCMSender extends HTTPSender
                 }
             }
         } else {
-            $request = new Request($to, $options, $notification, $data);
+            $request = new Request($to, $options, $notification, $data, null, $config_key);
             $responseGuzzle = $this->post($request);
 
             $response = new DownstreamResponse($responseGuzzle, $to);
@@ -67,12 +68,13 @@ class FCMSender extends HTTPSender
      * @param Options|null             $options
      * @param PayloadNotification|null $notification
      * @param PayloadData|null         $data
+     * @param string                   $config_key
      *
      * @return GroupResponse
      */
-    public function sendToGroup($notificationKey, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null)
+    public function sendToGroup($notificationKey, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, $config_key = 'fcm.http')
     {
-        $request = new Request($notificationKey, $options, $notification, $data);
+        $request = new Request($notificationKey, $options, $notification, $data, null, $config_key);
 
         $responseGuzzle = $this->post($request);
 
@@ -86,12 +88,13 @@ class FCMSender extends HTTPSender
      * @param Options|null             $options
      * @param PayloadNotification|null $notification
      * @param PayloadData|null         $data
+     * @param string                   $config_key
      *
      * @return TopicResponse
      */
-    public function sendToTopic(Topics $topics, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null)
+    public function sendToTopic(Topics $topics, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, $config_key = 'fcm.http')
     {
-        $request = new Request(null, $options, $notification, $data, $topics);
+        $request = new Request(null, $options, $notification, $data, $topics, $config_key);
 
         $responseGuzzle = $this->post($request);
 
